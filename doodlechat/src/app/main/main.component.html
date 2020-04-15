@@ -1,0 +1,95 @@
+ <div class='page-header messageheader'>
+        <div class='btn-toolbar pull-right'>
+            <div class='btn-group'>
+             <button type='button' class='addgroup' (click)="logout()"> 
+              <i class="fa fa-sign-out" matTooltip="Logout" aria-hidden="true"></i>
+</button>
+            </div>
+        </div>
+         <h2>Welcome {{currentUser?.firstName}} {{currentUser?.lastName}} !!
+</h2>
+
+    </div>
+<div class="content" role="main">
+  <div  class="container">
+    <div class="messaging">
+      <div class="inbox_msg">
+        <div class="inbox_people">
+          <div class="headind_srch">
+            <div class="channel_heading">
+              <h4>contacts</h4>
+            
+            </div>
+              <button class="addgroup" type="button"  matTooltip="Add group" (click)="openModel()"> 
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+          </div>
+          <div class="inbox_chat">
+            <div class="channels" *ngFor="let contacts of contactsList">
+              <div class="chat_list" *ngIf="currentUser?.email!=contacts?.email" (click)="selectuser(contacts)">
+                <div class="chat_people">
+                  <div class="chat_ib">
+                    <h5>
+                    <img  *ngIf="contacts?.gender=='Male'"src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+                     <img *ngIf="contacts?.gender=='Female'" src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">
+                      {{ contacts?.firstName }} {{ contacts?.lastName }} {{ contacts?.groupname }}
+
+                    </h5>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+         <div class="card">
+       <div class="card-header">{{selecteduser?.firstName}}{{selecteduser?.lastName}}{{ selecteduser?.groupname }}</div>
+    </div>
+        <div class="mesgs">
+          <div class="msg_history">
+            <li class="message" *ngFor="let message of messages">
+              <div
+                *ngIf="
+                  message.senderid._id == currentUser._id;
+                  then outgoing_msg;
+                  else incoming_msg
+                "
+              ></div>
+              <ng-template #incoming_msg>
+                <div class="incoming_msg">
+                  <div class="incoming_msg_img">
+                    <img
+                      src="https://i.imgur.com/k2PZLZa.png"
+                      alt="User avatar"
+                    />
+                  </div>
+                  <div class="received_msg">
+                    <div class="received_withd_msg">
+                      <p>{{ message.message }}</p>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #outgoing_msg>
+                <div class="outgoing_msg">
+                  <div class="sent_msg">
+                    <p>{{ message.message }}</p>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </div>
+          <div class="type_msg">
+            <form class="input_msg_write" [formGroup]="chatForm" *ngIf="selecteduser" (ngSubmit)="sendMessage()">
+              <input type="text" placeholder="Type a message" formControlName="message" class="typee">
+
+              <button class="msg_send_btn" type="button" (click)="sendMessage()">
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
